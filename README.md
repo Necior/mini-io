@@ -49,3 +49,4 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * W przypadku Porządnego Kawałka, przy odkładaniu, dostajemy informację, czy to pole celu, czy też nie.
 * Mistrz Gry może usunąć Lipny Kawałek (o ile nie jest właśnie "w czyjejś dłoni"). Może też wygenerować nowy, na wolnym polu.
 * Domyślne parametry Gry będą ustalone, ale są one zmienialne.
+* Wymiana informacji nie przechodzi przez Mistrza Gry.
