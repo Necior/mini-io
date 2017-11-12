@@ -32,27 +32,27 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Na jednym polu może znajdować się co najwyżej jeden Gracz.
 * Odpowiadamy całą Planszą przy wymianie informacji.
 * Wymiana informacji przebiega w jedną stronę.
-* -----Podczas wymiany informacji obydwaj gracze tracą czas
+    * Podczas wymiany informacji obydwaj gracze tracą czas
 * Jednym z konfigurowalnych ustawień Gry jest "komunikacja pomiędzy Zespołami" (jako `true`/`false`). Nazwijmy to roboczo "flagą komunikacji".
 * Podawanie fałszywych informacji jest zabronione.
 * Lider ma obowiązek odpowiadania swojemu Zespołowi.
 * Lider ma obowiązek odpowiadanie przeciwnemu Zespołowi, o ile jest ustawiona "flaga komunikacji".
 * Jeśli dane pole nie jest celem, to Kawałek *nie* znika po odłożeniu. Można (być może warto) go podnieść.
 * Gracz raczej nie powinien zostawiać Lipnych Kawałków w Strefie Celu, ale nie jest to formalny wymóg.
-* -----A nie ustaliliśmy przypadkiem tak, że trzeba wynieść ten kawałek poza Strefę Celu?
+    * A nie ustaliliśmy przypadkiem tak, że trzeba wynieść ten kawałek poza Strefę Celu?
 * Można przechodzić przez pola z Kawałkami i ich nie podnosić.
 * Zawsze widzimy pole pod sobą (wraz z odległością do najbliższego Kawałka, być może równą 0).
 * Podniesienie Kawałka zwraca Graczowi informację o nowej odległości do najbliższego Kawałka.
-* -----Jest to rówznoznaczne z tym, że Master musi przeliczyć całą planszę po podniesieniu kawałka
+    * Jest to rówznoznaczne z tym, że Master musi przeliczyć całą planszę po podniesieniu kawałka
 * Cel odkrywamy tylko poprzez położenie Kawałka, nie poprzez odkrywanie pól dookoła.
 * Kawałek można testować tylko, jeśli Gracz "ma go w ręku".
 * Odłożenie Kawałka na pole sprawia, że Kawałek tam zostaje, niezależnie od tego, czy to cel.
 * Znamy tylko pozycje Graczy, nie to, czy "mają w ręku" Kawałek.
 * Przy generowaniu Planszy, stosujemy symetrię środkową ułożenia celu.
 * W przypadku Lipnego Kawałka, przy odkładaniu, nie dostajemy informacji, czy to pole celu, czy też nie.
-* -----Tym samym mamy informację, że to Lipny Kawałek
+    * Tym samym mamy informację, że to Lipny Kawałek
 * W przypadku Porządnego Kawałka, przy odkładaniu, dostajemy informację, czy to pole celu, czy też nie.
 * Mistrz Gry może usunąć Lipny Kawałek (o ile nie jest właśnie "w czyjejś dłoni"). Może też wygenerować nowy, na wolnym polu.
-* -----Przyjęliśmy, że jest maksymalna liczba fałszywek na planszy
+    * Przyjęliśmy, że jest maksymalna liczba fałszywek na planszy
 * Domyślne parametry Gry będą ustalone, ale są one zmienialne.
 * Wymiana informacji nie przechodzi przez Mistrza Gry.
