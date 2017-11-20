@@ -56,3 +56,17 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
     * Przyjęliśmy, że jest maksymalna liczba fałszywek na planszy
 * Domyślne parametry Gry będą ustalone, ale są one zmienialne.
 * Wymiana informacji nie przechodzi przez Mistrza Gry.
+
+
+### 20.11.2017
+* Komunikacja też idzie przez GameMastera.
+* Gracz dostaje informację o odległości od najbliższego kawałka wchodząc na dane pole, informacja nie jest potem uaktualniana.
+* Ruch - gracz wysyła rządanie do Game Mastera, Game Master wysyła odpowiedź czy akcja może być wykonana, jeśli ruch jest dozwolony wykonuje ruch gracza, odkładanie kawałka, GameMaster czeka tyle ile trzeba, wysyła odpowiedź, jaki jest stan planszy, że czas się skończył i można wysłać następne polecenie.
+* Po położeniu dobrej flagi na dobry kafelek zaznaczamy że jest to spełniony cel.
+* Game Master tworzy kawałki jak chce.
+* Dodajemy akcję która nie wymaga opóźnienia w której możemy poznać informacje: położenie wszystkich graczy, odległość na polu pod sobą.
+* Wysłanie prośby o informacje kosztuje jakiś czas, a potem oddzielnie dostajemy odpowiedź, w międzyczasie można wykonywać akcje.
+* Widzimy odległości tylko do kawałków na Task Area i swoim Goal Area.
+* Informacje po odłożeniu flagi na goal area: jeśli mamy fałszywkę dostajemy informację, że jest fałszywka. Jak mamy dobrą flagę dostajemy informację czy pole jest dobre, czy złe.
+
+
