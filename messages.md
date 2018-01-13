@@ -5,6 +5,10 @@ Game Master (Communication Server?) must include `referenceId` in response.
 This mechanism allows Players for matching each response to its request.
 `referenceId` value is arbitrarily set by each Player.
 
+## Board type definition
+
+To be done.
+
 ## Messages from Game Master
 
 ### Game start
