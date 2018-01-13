@@ -57,6 +57,15 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Domyślne parametry Gry będą ustalone, ale są one zmienialne.
 * Wymiana informacji nie przechodzi przez Mistrza Gry.
 
+### 06.11.2017
+
+* Niepoprawny ruch (np. ktoś już stoi na danym polu) nic nie kosztuje.
+* Game Master zarządza i pilnuje opóźnień dla wszystkich graczy.
+* Gra nie jest turowa, jest czas rzeczywistego (z opóźnieniami).
+* Podczas dodawania kolejnego Lipnego Kawałka, jeśli zostanie przekroczony limit, usunięty zostanie najstarszy możliwy do usunięcia.
+* Do serwera komunikacyjnego łączą się sami gracze. Klasa Team jest opcjonalna - może pomóc w zarządzaniu strategiami w drużynie.
+* Sposób komunikacji (sieciowej) zostanie ustalony później.
+* W dokumentacji należy umieścić wszystkie notatki, ustalenia i diagramy (aczkolwiek to nie wszystko).
 
 ### 20.11.2017
 * Komunikacja też idzie przez GameMastera.
