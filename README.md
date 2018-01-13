@@ -78,4 +78,9 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Widzimy odległości tylko do kawałków na Task Area i swoim Goal Area.
 * Informacje po odłożeniu flagi na goal area: jeśli mamy fałszywkę dostajemy informację, że jest fałszywka. Jak mamy dobrą flagę dostajemy informację czy pole jest dobre, czy złe.
 
+### 04.12.2017
+
+* Początkowe ustawienie gracza jest losowane przez Game Mastera.
+* Serwer komunikacyjny ma być jedynie pośrednikiem. Cała logika gry jest przechowywana przez Game Mastera.
+
 
