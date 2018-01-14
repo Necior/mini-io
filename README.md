@@ -57,7 +57,7 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Domyślne parametry Gry będą ustalone, ale są one zmienialne.
 * Wymiana informacji nie przechodzi przez Mistrza Gry.
 
-### 06.11.2017
+### 2017-11-06
 
 * Niepoprawny ruch (np. ktoś już stoi na danym polu) nic nie kosztuje.
 * Game Master zarządza i pilnuje opóźnień dla wszystkich graczy.
@@ -67,7 +67,8 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Sposób komunikacji (sieciowej) zostanie ustalony później.
 * W dokumentacji należy umieścić wszystkie notatki, ustalenia i diagramy (aczkolwiek to nie wszystko).
 
-### 20.11.2017
+### 2017-11-20
+
 * Komunikacja też idzie przez GameMastera.
 * Gracz dostaje informację o odległości od najbliższego kawałka wchodząc na dane pole, informacja nie jest potem uaktualniana.
 * Ruch - gracz wysyła rządanie do Game Mastera, Game Master wysyła odpowiedź czy akcja może być wykonana, jeśli ruch jest dozwolony wykonuje ruch gracza, odkładanie kawałka, GameMaster czeka tyle ile trzeba, wysyła odpowiedź, jaki jest stan planszy, że czas się skończył i można wysłać następne polecenie.
@@ -78,7 +79,7 @@ System pozwala na organizowanie meczy pomiędzy zespołami.
 * Widzimy odległości tylko do kawałków na Task Area i swoim Goal Area.
 * Informacje po odłożeniu flagi na goal area: jeśli mamy fałszywkę dostajemy informację, że jest fałszywka. Jak mamy dobrą flagę dostajemy informację czy pole jest dobre, czy złe.
 
-### 04.12.2017
+### 2017-12-04
 
 * Początkowe ustawienie gracza jest losowane przez Game Mastera.
 * Serwer komunikacyjny ma być jedynie pośrednikiem. Cała logika gry jest przechowywana przez Game Mastera.
