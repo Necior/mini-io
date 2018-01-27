@@ -44,6 +44,9 @@ Michalina Tumialis
 \tableofcontents
 \newpage
 
+\listoftodos
+\newpage
+
 \section{Cel projektu}
 
 Celem jest zaplanowanie oraz~implementacja gry symulującej pracę w środowisku projektowym.
@@ -64,9 +67,26 @@ Gracze mogą się ze sobą komunikować, wykazując różne wzorce zachowań.
 Prawdziwy stan gry jest przechowywany przez mistrza gra, który jest odpowiedzialny za wygenerowanie planszy oraz~umieszczanie nowych kawałków w strefie zadań.
 Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer komunikacyjny.
 
-\newpage
+\section{Zasady gry}
 
-\section{Przypadki użycia}
+\section{Słowniczek pojęć}
+
+\todo{Słowniczek pojęć}
+
+\section{Aktorzy}
+
+\todo{Aktorzy}
+
+\subsection{Reguły}
+
+\todo{Reguły}
+
+\subsection{Możliwe akcje}
+
+\todo{Możliwe akcje}
+
+\subsubsection{Przypadki użycia}
+
 \includepdf[pages={1}]{przypadki_uzycia_gracz_lider.pdf}
 Gracz może otrzymać prośbę o wymianę informacji.
 Prośba może zostać zaakceptowana lub~odrzucona.
@@ -88,7 +108,21 @@ Następnie -- podczas gry -- dodaje kawałki (fałszywe lub nie) do strefy zada�
 
 Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczami a mistrzem gry.
 
-\section{Diagram klas}
+\section{Możliwości konfguracyjne}
+
+\todo{Możliwości konfguracyjne}
+
+\section{Uruchamianie aplikacji}
+
+\todo{Uruchamianie aplikacji -- jak będzie uruchamiana, co będzie wynikiem, skąd jest czytana konfiguracja etc.}
+
+\section{Wymagania niefunkcjonalne}
+
+\todo{FURPS -- ile graczy obsługiwanych maksymalnie, co w przypadku problemów na łączach (rozłączenie gracza itp.)}
+
+\section{Opis architektury}
+
+\subsection{Diagram klas}
 \includepdf[pages={1}]{diagram_klas.pdf}
 
 Klasa gracza zawiera pole strategii, odpowiedzialnej za wyliczanie kolejnych ruchów.
@@ -155,8 +189,11 @@ Jeśli ruch zostanie odrzucony przez mistrza gry, gracz od razu próbuje wykona�
 
 Jeśli w którymś momencie gracz otrzyma wiadomość o zakończeniu gry (lub utraci połączenie), kończy działanie.
 
-\newpage
-\section{Diagram sekwencji}
+\section{Protokół komunikacyjny}
+
+\todo{Opis słowny komunikacji}
+
+\subsection{Diagram sekwencji}
 \includepdf[pages={1}]{sekwencje1.pdf}
 
 Najpierw gracz wywołuje metodę \code{Connect()} i~czeka na odpowiedź od serwera komunikacyjnego, który to przekierowuje zapytanie do mistrza gry i~czeka na odpowiedź, którą przekazuje do gracza.
@@ -178,5 +215,15 @@ Kiedy gracz \code{p1} chce skomunikować się z~graczem \code{p2}, najpierw wysy
 Serwer komunikacyjny przekazuje zapytanie do mistrza gry, który następnie decyduje, czy taki ruch jest możliwy w danym momencie.
 Jeśli tak, to mistrz gry wysyła zapytanie (zawierające pole nadawcy, czyli gracza \code{p1}) do \code{p2}.
 Po otrzymaniu tej wiadomości (ponownie: za~pośrednictwem serwera komunikacyjnego), gracz \code{p2} decyduje o odpowiedzi (akceptacji lub odrzuceniu) i~wysyła ją. Odpowiedź wędruje przez serwer komunikacyjny do mistrza gry, ponownie do serwera komunikacyjnego, aż trafi do gracza \code{p1}.
+
+\subsection{Struktura wiadomości}
+
+\todo{Struktura wiadomości -- XML/JSON?}
+
+\section{Opis sytuacji wyjątkowych}
+
+\subsection{Utrata łączności z graczem}
+\subsection{Utrata łączności z serwerem komunikacyjnym}
+\subsection{Utrata łączności z mistrzem gry}
 
 \end{document}
