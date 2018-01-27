@@ -67,8 +67,6 @@ Gracze mogą się ze sobą komunikować, wykazując różne wzorce zachowań.
 Prawdziwy stan gry jest przechowywany przez mistrza gra, który jest odpowiedzialny za wygenerowanie planszy oraz~umieszczanie nowych kawałków w strefie zadań.
 Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer komunikacyjny.
 
-\section{Zasady gry}
-
 \section{Słowniczek pojęć}
 
 \begin{itemize}
@@ -92,14 +90,106 @@ Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer
   Gra (\emph{project game}) - gra czasu rzeczywistego, odbywająca się na planszy, gdzie rywalizują dwa zespoły.
 \end{itemize}
 
+\section{Reguły gry}
+
+\begin{itemize}
+\item
+  Nie można wejść w strefę celu przeciwnika;
+\item
+  Mając kawałek można wejść na pole z innym kawałkiem;
+\item
+  Gra się kończy, gdy którakolwiek drużyna odkryje wszystkie cele;
+\item
+  Gracze w obrębie jednego zespołu mogą mieć inne strategie;
+\item
+  Na jednym polu może znajdować się co najwyżej jeden gracz;
+\item
+  Odpowiadamy całą planszą przy wymianie informacji;
+\item
+  Wymiana informacji przebiega w jedną stronę;
+\item
+  Podczas wymiany informacji, obydwaj gracze tracą czas;
+\item
+  Jednym z konfigurowalnych ustawień gry jest ``komunikacja pomiędzy zespołami'' (jako \texttt{true}/\texttt{false}). Nazwijmy to roboczo ``flagą komunikacji'';
+\item
+  Podawanie fałszywych informacji jest zabronione;
+\item
+  Lider ma obowiązek odpowiadania swojemu zespołowi;
+\item
+  Lider ma obowiązek odpowiadanie przeciwnemu zespołowi, o ile jest ustawiona ``flaga komunikacji'';
+\item
+  Jeśli dane pole nie jest celem, to kawałek \emph{nie} znika po odłożeniu. Można (być może warto) go wtedy podnieść;
+\item
+  Gracz raczej nie powinien zostawiać lipnych kawałków w strefie celu, ale nie jest to formalny wymóg;
+\item
+  Można przechodzić przez pola z kawałkami i ich nie podnosić;
+\item
+  Zawsze widzimy pole pod sobą (wraz z odległością do najbliższego kawałka, być może równą 0);
+\item
+  Podniesienie kawałka zwraca graczowi informację odległość do najbliższego kawałka;
+\item
+  Cel odkrywamy tylko poprzez położenie kawałka, nie poprzez odkrywanie pól dookoła;
+\item
+  Kawałek można testować tylko, jeśli aktualnie podniesiony przez gracza, który go chce przetestować;
+\item
+  Odłożenie kawałka na pole sprawia, że kawałek tam zostaje, niezależnie od tego, czy to cel;
+\item
+  Znamy tylko pozycje graczy, nie to, czy ``mają w ręku'' kawałek;
+\item
+  Przy generowaniu planszy, stosujemy symetrię środkową ułożenia celu;
+\item
+  W przypadku kawałka, który nie jest prawdziwy, przy odkładaniu, nie dostajemy informacji, czy to pole celu, czy też nie;
+
+  \begin{itemize}
+  \item
+    Tym gracz się dowiaduje, że to nie był prawdziwy kawałek;
+  \end{itemize}
+\item
+  W przypadku prawdziwego kawałka, przy odkładaniu, dostajemy informację, czy to pole celu, czy też nie;
+\item
+  Mistrz gry może usunąć nieprawdziwy kawałek (o ile nie jest aktualnie podniesiony przez któregoś z graczy). Może też wygenerować nowy, na wolnym polu;
+
+  \begin{itemize}
+  \item
+    Liczba nieprawdziwych kawałków na planszy jest ograniczona i konfigurowalna;
+  \end{itemize}
+\item
+  Wymiana informacji przechodzi przez mistrza gry;
+\item
+  Niepoprawny ruch (np. ktoś już stoi na danym polu) nic nie kosztuje;
+\item
+  Game master zarządza i pilnuje opóźnień dla wszystkich graczy;
+\item
+  Gra nie jest turowa, jest czas rzeczywistego (z opóźnieniami);
+\item
+  Do serwera komunikacyjnego łączą się bezpośrednio gracze;
+\item
+  Wszelka komunikacja jest przetwarzana przez mistrza gry, który odpowiada za pilnowanie legalności ruchów oraz za opóźnienia;
+\item
+  Gracz dostaje informację o odległości od najbliższego kawałka wchodząc na dane pole, informacja nie jest potem uaktualniana;
+\item
+  Ruch gracza przebiega następująco: gracz wysyła żądanie do mistrza gry, mistrz gry odsyła odpowiedź, czy akcja może zostać wykonana. Jeśli akcja jest dozwolona, wykonywany jest ruch, po czym mistrz gry (po upływie czasu akcji) wysyła odpowiedź, że czas akcji minął. Wraz z tym komunikatem, mistrz gry przesyła aktualny stan planszy pod graczem, tj. odległość do najbliższego kawałka;
+\item
+  Po położeniu prawdziwego kawałka na dobry kafelek w strefie celu jest ten kafelek oznaczany jako spełniony cel;
+\item
+  Mistrz gry tworzy nowe kawałki według dowolnej strategii (z dokładnością do limitu nieprawdziwych kawałków);
+\item
+  Akcje sprawdzenia położenia wszystkich graczy wraz z odległością do najbliższego kawałka z aktualnej pozycji gracza ma zerowy koszt czasowy;
+\item
+  Wszystkie inne akcje (łącznie z prośbą o komunikację) mają konfigurowalny, zapewne niezerowy koszt;
+\item
+  Podczas oczekiwania na odpowiedź na prośbę o komunikację, gracz może wykonywać inne akcje;
+\item
+  Gracz widzi odległości tylko do kawałków położonych w strefie zadań i strefie celu swojej drużyny;
+\item
+  Po odłożeniu kawałka w strefie celu, jeśli kawałek był nieprawdziwy, gracz otrzymuje informację, że kawałek nie był prawdziwy. Jeśli kawałek był prawdziwy, to gracz otrzymuje informację, czy to było pole celu, czy nie;
+\item
+  Początkowe ustawienie graczy jest losowane przez mistrza gry.
+\end{itemize}
 
 \section{Aktorzy}
 
 \todo{Aktorzy}
-
-\subsection{Reguły}
-
-\todo{Reguły}
 
 \subsection{Możliwe akcje}
 
