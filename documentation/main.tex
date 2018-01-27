@@ -135,11 +135,11 @@ Lider jest specjalnym rodzajem gracza, mającym dodatkowe ustawienie -- czy musi
 
 W grze występują następujące wydarzenia:
 \begin{itemize}
-	\item \code{MoveEvent} -- zawiera kierunek ruchu (lewo, prawo, góra, dół);
-	\item \code{PickUpEvent} oraz~\code{PlaceEvent} -- wydarzenia mające miejsce, gdy gracz kolejno podnosi lub~odkłada kawałek;
-	\item \code{TestPieceEvent} -- akcja sprawdzania przez gracza, czy kawałek jest fałszywką, czy nie;
-	\item \code{DiscoverEvent} -- sprawdzenie przez gracza pól dookoła;
-	\item \code{CommunicateEvent} -- prośba o wymianę informacji pomiędzy dwoma graczami (prośba o wymianę informacji może zostać zaakceptowana lub odrzucona; jedynie lider ma obowiązek odpowiadania na prośby);
+    \item \code{MoveEvent} -- zawiera kierunek ruchu (lewo, prawo, góra, dół);
+    \item \code{PickUpEvent} oraz~\code{PlaceEvent} -- wydarzenia mające miejsce, gdy gracz kolejno podnosi lub~odkłada kawałek;
+    \item \code{TestPieceEvent} -- akcja sprawdzania przez gracza, czy kawałek jest fałszywką, czy nie;
+    \item \code{DiscoverEvent} -- sprawdzenie przez gracza pól dookoła;
+    \item \code{CommunicateEvent} -- prośba o wymianę informacji pomiędzy dwoma graczami (prośba o wymianę informacji może zostać zaakceptowana lub odrzucona; jedynie lider ma obowiązek odpowiadania na prośby);
 \end{itemize}
 
 Wydarzenia są umieszczanie w kolejce \code{(EventQueue}), która zawiera przedstawione wyżej wydarzenia oraz~dwa specjalne: \code{GameStartEvent} tudzież~\code{GameEndEvent}.
@@ -218,7 +218,265 @@ Po otrzymaniu tej wiadomości (ponownie: za~pośrednictwem serwera komunikacyjne
 
 \subsection{Struktura wiadomości}
 
-\todo{Struktura wiadomości -- XML/JSON?}
+Wiadomości są przesyłane w formacie JSON.
+W tym dokumencie, dla czytelności, używamy uproszczonego zapisu, w którym słownik jest reprezentowany przez wcięcie w kodzie.
+Przykład w~JSON-ie:
+
+\begin{verbatim}
+{
+    "var1": 5,
+    "var2":
+        [
+            1,
+            2,
+            3
+        ],
+    "var3":
+        {
+            "var3_a": "a",
+            "var3_b": "b",
+            "var3_c": "c",
+        }
+}
+\end{verbatim}
+
+Ta sama wiadomość w uproszczonym zapisie:
+
+\begin{verbatim}
+- var1: 5
+- var2:
+    - 1
+    - 2
+    - 3
+- var3:
+    - var3_a: "a"
+    - var3_b: "b"
+    - var3_c: "c"
+\end{verbatim}
+
+Wszystkie wiadomości muszą mieć pole \code{referenceId} (które jest typu całkowitoliczbowego).
+Mistrz gry musi dołączać \code{referenceId} w odpowiedziach.
+Ten mechanizm pozwala graczom na dopasowanie poszczególnych odpowiedzi do zapytania, którego ona dotyczy.
+
+Wartość pola \code{referenceId} jest arbitralnie ustalana przez każdego gracza.
+
+\subsubsection{Struktura planszy}
+
+Plansza jest dwuwymiarową tablicą, gdzie pierwszy indeks wskazuje na wiersz, zaś drugi na kolumnę.
+
+\subsubsection{Wiadomości od mistrza gry}
+
+\paragraph{Początek gry}
+\hfill
+\hfill
+
+Do: wszystkich graczy
+
+Struktura:
+
+\begin{verbatim}
+- type: "gameStart"
+- body:
+    - position_x: <int>
+    - position_y: <int>
+    - pieceDistance: <int>
+\end{verbatim}
+
+\paragraph{Koniec gry}
+\hfill
+
+Do: wszystkich graczy
+
+Struktura:
+
+\begin{verbatim}
+- type: "gameEnd"
+\end{verbatim}
+
+\paragraph{Prośba o komunikację pomiędzy graczami}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "communicationRequest"
+- body:
+    - playerId: <int>
+    - mustAccept: <bool>
+\end{verbatim}
+
+Uwaga: pole \code{mustAccept} musi być ustawione według tego, czy żądanie zostało wysłane przez~lidera.
+
+Odpowiedź:
+
+\begin{verbatim}
+- type: "communicationRequest"
+- body:
+    - board: <Board>
+\end{verbatim}
+
+\subsubsection{Wiadomości od graczy}
+
+\paragraph{Dołączenie do gry}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "join"
+- body:
+    - teamId: <int>
+\end{verbatim}
+
+Odpowiedź (w przypadku sukcesu):
+
+\begin{verbatim}
+- type: "join"
+- body:
+    - success: True
+    - playerId: <int>
+    - boardWidth: <int>
+    - boardHeight: <int>
+    - goalAreaHeight: <int>
+    - upperGoalAreaTeamId: <int>
+    - maxShamCount: <int>
+    - eventCosts: Map<Event, int>
+\end{verbatim}
+
+Odpowiedź (w przypadku niepowodzenia):
+
+\begin{verbatim}
+- type: "join"
+- body:
+    - success: False
+\end{verbatim}
+
+\paragraph{Ruch w jednym z czterech kierunków}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "move"
+- body:
+    - direction: <int>
+\end{verbatim}
+
+Gdzie \code{direction} jest typu \code{enum}.
+
+Odpowiedź (success):
+
+\begin{verbatim}
+- type: "move"
+- body:
+    - success: True
+    - pieceDistance: <int>
+\end{verbatim}
+
+Odpowiedź (failure):
+
+\begin{verbatim}
+- type: "move"
+- body:
+    - success: False
+    - pieceDistance: <int>
+\end{verbatim}
+
+\paragraph{Przetestowanie kawałka}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "test"
+\end{verbatim}
+
+Odpowiedź:
+
+\begin{verbatim}
+- type: "test"
+- body:
+    - isSham: <bool>
+\end{verbatim}
+
+\paragraph{Odłożenie kawałka}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "place"
+\end{verbatim}
+
+Odpowiedź:
+
+\begin{verbatim}
+- type: "place"
+- body:
+    - success: <bool>
+\end{verbatim}
+
+\paragraph{Podniesienie kawałka}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "pickUp"
+\end{verbatim}
+
+Odpowiedź:
+
+\begin{verbatim}
+- type: "place"
+- body:
+    - success: <bool>
+\end{verbatim}
+
+\paragraph{Odkrywanie pól dookoła}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "discover"
+\end{verbatim}
+
+Odpowiedź:
+
+\begin{verbatim}
+- type: "discover"
+- body:
+    - discovered: <tuple of 9 nullable ints>
+\end{verbatim}
+
+\paragraph{Prośba o komunikację pomiędzy graczami}
+\hfill
+
+Struktura:
+
+\begin{verbatim}
+- type: "communicationRequest"
+- body:
+    - targetPlayer: <int>
+\end{verbatim}
+
+Odpowiedź (w przypadku akceptacji):
+
+\begin{verbatim}
+- type: "communicationRequest"
+- body:
+    - success: False
+    - board: <Board>
+\end{verbatim}
+
+Odpowiedź (w przypadku odmowy):
+
+\begin{verbatim}
+- type: "communicationRequest"
+- body:
+    - success: False
+\end{verbatim}
 
 \section{Opis sytuacji wyjątkowych}
 
