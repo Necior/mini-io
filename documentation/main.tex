@@ -42,54 +42,140 @@ Michalina Tumialis
 \begin{document}
 \maketitle
 \newpage
-\section{Purpose of project}
 
-The purpose of this project was to design and implement a game simulating a work in a project environment, especially focusing on its effectiveness resulting from various patterns of behavior associated with players - members of competing teams.
+\section{Cel projektu}
 
-\section{Game description}
+Celem jest zaplanowanie oraz~implementacja gry symulującej pracę w środowisku projektowym.
+Szczególny nacisk kładziony jest na badanie wpływu zachowań poszczególnych graczy (tj. członków rywalizujących zespołów) na efektywność.
 
-The game is a competition between two teams. Both teams consist of multiple players and one special player - team leader.
-The game is played on a board divided into three areas - two goal areas belonging to each team and one central task area.
-Tasks to be undertaken by teams are represented by pieces, placed on task area, which need to be picked up by players and moved to their goal area, where the player will be able to determine, whether the task they picked up was a proper project resource or a sham. 
-Each player holds its own view of the state of the game. 
-Players may communicate with each other and may exhibit different behaviors. 
-The real state of a game is held by Game Master, which generates the Board and places new pieces on task area. 
-Messages between Game Master and players are passed by Communication Server.
+\section{Opis gry}
+
+Gra jest toczona przez dwa rywalizujące zespoły.
+Oba zespoły składają się z~wielu graczy oraz~z~jednego wyróżnionego -- lidera zespołu.
+
+Gra jest rozgrywana na prostokątnej planszy, która jest podzielona na trzy strefy: dwie strefy celu (po jednej na każdą drużynę) oraz~na~środkową strefę -- strefę zadań.
+Zadania do przedsięwzięćia przez zespoły są reprezentowane przez kawałki.
+Są one umieszczane w strefie zadań, z~której to muszą zostać podniesione przez graczy, a następnie zaniesione do strefy celu.
+W strefie celu gracz jest w stanie stwierdzić, czy podniesiony kawałek był fałszywką, czy nie.
+
+Każdy gracz przechowuje własny stan gry.
+Gracze mogą się ze sobą komunikować, wykazując różne wzorce zachowań.
+Prawdziwy stan gry jest przechowywany przez mistrza gra, który jest odpowiedzialny za wygenerowanie planszy oraz~umieszczanie nowych kawałków w strefie zadań.
+Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer komunikacyjny.
+
 \newpage
-\section{Use cases}
+
+\section{Przypadki użycia}
 \includepdf[pages={1}]{przypadki_uzycia_gracz_lider.pdf}
-A player may receive an information request. Then, they can accept or reject this request. A request from team leader cannot be rejected. The player can move in four directions, however they cannot enter goal area of the opposite team. They can check fields, pick up pieces located on them and test on goal area, whether the piece is real or a sham.  Player can request information exchange or demand it as a leader.
-\includepdf[pages={1}]{przypadki_uzycia_gm.pdf}
-Game Master starts a game, which include generating the Board, creating teams and accepting players. Then, during the game, it adds pieces to Task Area, which can be real pieces or shams, and calculate the Board. They also redirect messages between player and process their moves.
-\includepdf[pages={1}]{przypadki_uzycia_cs.pdf}
-Communication Server is responsible for redirecting messages between players and Game Master.
-\newline
-\section{Class diagram}
-\includepdf[pages={1}]{diagram_klas.pdf}
-Player class contains an strategy field , deciding about the strategy of a player – how their next move is calculated, settings field with an id of the team the player belongs to, field with their current location and a reference to the game board. Player can choose their next move and process events. Leader is a special type of player, having additional settings – whether they’ll communicate with opponents or not.
-There are several events: MoveEvent, which includes an information about the move direction – Left, Right, Up or Down. There is a PickUpEvent and PlaceEvent, which happen when a piece is picked up or placed by a player; TestPieceEvent and DiscoverEvent – when player tests whether a piece is a sham or not and tries to discover a new goal; CommunicateEvent – contains information about player the message comes from, player being the target of the message and the message, as a string. Communication request can be rejected or accepted. Events are placed in EventQueue, which contains a list of regular events and special events – GameStartEvent and GameEndEvent.
-GameMaster is the class responsible for creating the game board, calculating, adding pieces to it, processing all moves of players and sending special events about game start and end. This class has references to both teams and the board, it also has its settings object with an information about an amount of players in teams and set methods.
-The communication between players and Game Master is passed through Communication Manager, which has a list of events, players and reference to Game Master.
-The main settings class has an information about board size – a pair of integers defining its width and height, maximum number of pieces which may be shams and map of costs of every event.
-The Board class contains three areas: one TaskArea, having a list of TaskFields and two GoalAreas with lists of GoalFields inside. Each Field contains a field with a piece, which can be set to null if there’s no piece on field. Additionally, TaskField has an information about the distance to the nearest piece and GoalField – information whether there’s a goal on it.
-The Piece class has its location – a point on board and an information if it’s a sham or not.
-\newpage
-\section{Activity diagram}
-\includepdf[pages={1}]{diagram_aktywnosci.pdf}
-Game is started. Game Master creates the Board: Task Area, Goal Areas and places pieces. Then it enables players' connections, waits for all player to connect and attaches them to teams. When all players are connected, Game Master calculate the Board and process players' moves. When the game is finished, it declares end of game.
-Player may join a game and perform moves: discovering, placing piece, moving to other field and picking up piece. The move requests are passed to Game Master and sent back to player through Communication Server.
-\newpage
-\section{State diagram}
-\includepdf[pages={1}]{state_diagram_player.pdf}
-Player starts the game in DISCONNECTED state. Then it tries to establish a connection. If it's unable to do it, it terminates. When the connection is established, it awaits game start. When the game is started, the player needs to choose its next move. Then, it waits for confirmation from Game Master. If the move is rejected, it goes back to CHOOSE MOVE state. If it's accepted, player awaits move completion and after the end of turn, process new board state. It may now finish the Game, if Game Master tells it to do so, or choose its next move. If player loses connection, it terminates.
-\newpage
-\section{Sequence diagrams}
-\includepdf[pages={1}]{sekwencje1.pdf}
-Player firstly calls its Connect() method and waits for response from Communication Manager. It forwards the request to Game Master and waits for connection result to forward it to player. If player receive positive response, they participate in game. If connection result is negative, the player terminates.
-\includepdf[pages={1}]{sekwencje2.pdf}
-Player performs actions in loop, which ends when action result forwarded to player by Communication Server equals "game over". The Communication Server is informed about actions performed by player and forwards them to Game Master, waits for action result and forward it to player. It also receives information about board updates from Game Master, which are forwarded to players.
-\includepdf[pages={1}]{sekwencje3.pdf}
-The communication between players goes through Communication Server and Game Master. When Player p1 wants to ask Player p2, it firstly sends a message to Communication Server, which then asks the Game Master, whether the request from p1 to p2 shall be accepted. If so, the message from p1 is forwarded to p2. Player p2 may now send a response to message. It goes through Communication Server to Game Master, and the Game Master sends the response to Player p1 through Communication Server.
+Gracz może otrzymać prośbę o wymianę informacji.
+Prośba może zostać zaakceptowana lub~odrzucona.
+Wyjątkiem jest prośba o wymianę informacji od lidera zespołu -- ta nie może zostać odrzucona.
 
+Gracz może poruszać się w jednym z~czterech kierunków (góra, dół, prawo, lewo).
+Nie może jednak wejść na pole celu przeciwnego zespołu.
+
+Gracz ma również do dyspozycji następujące akcje: sprawdzenie pól dookoła, podniesienie kawałka z~aktualnego pola, przetestowanie kawałka (o ile gracz znajduje się w strefie celu).
+Ponadto, gracz może wysłać prośbę o wymianę informacji do innego gracza.
+W szczególności, może zarządać wymiany informacji od lidera.
+
+\includepdf[pages={1}]{przypadki_uzycia_gm.pdf}
+
+Mistrz gry rozpoczyna grę, tj. generuje planszę oraz~czeka (i akceptuje) łączących się graczy.
+Następnie -- podczas gry -- dodaje kawałki (fałszywe lub nie) do strefy zadań; przelicza odległości do najbliższych kawałków; przekierowuje wiadomości pomiędzy graczami; oraz~przetwarza ruchy graczy.
+
+\includepdf[pages={1}]{przypadki_uzycia_cs.pdf}
+
+Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczami a mistrzem gry.
+
+\section{Diagram klas}
+\includepdf[pages={1}]{diagram_klas.pdf}
+
+Klasa gracza zawiera pole strategii, odpowiedzialnej za wyliczanie kolejnych ruchów.
+Ponadto, klasa przechowuje pole ustawień (numer zespołu, rozmiar planszy, maksymalna liczba dopuszczalnych fałszywek oraz~mapę kosztów poszczególnych ruchów).
+Gracz przechowuje również swoja aktualną pozycję na planszy oraz~referencję do obiektu planszy.
+Gracz może wybrać swój następny ruch oraz~może przetwarzać nadchodzące wydarzenia.
+Lider jest specjalnym rodzajem gracza, mającym dodatkowe ustawienie -- czy musi się komunikować z~przeciwną drużyną, czy nie.
+
+\hfill 
+
+W grze występują następujące wydarzenia:
+\begin{itemize}
+	\item \code{MoveEvent} -- zawiera kierunek ruchu (lewo, prawo, góra, dół);
+	\item \code{PickUpEvent} oraz~\code{PlaceEvent} -- wydarzenia mające miejsce, gdy gracz kolejno podnosi lub~odkłada kawałek;
+	\item \code{TestPieceEvent} -- akcja sprawdzania przez gracza, czy kawałek jest fałszywką, czy nie;
+	\item \code{DiscoverEvent} -- sprawdzenie przez gracza pól dookoła;
+	\item \code{CommunicateEvent} -- prośba o wymianę informacji pomiędzy dwoma graczami (prośba o wymianę informacji może zostać zaakceptowana lub odrzucona; jedynie lider ma obowiązek odpowiadania na prośby);
+\end{itemize}
+
+Wydarzenia są umieszczanie w kolejce \code{(EventQueue}), która zawiera przedstawione wyżej wydarzenia oraz~dwa specjalne: \code{GameStartEvent} tudzież~\code{GameEndEvent}.
+
+\hfill
+
+Mistrz gry jest klasą odpowiedzalną za stworzenie planszy, przeliczanie stanu gry, dodawania kawałków do planszy, przetwarzenie wszytkich ruchów graczy oraz~za wysyłanie specjalnych wydarzeń, takich jak informacja o początku lub końcu gry.
+Ta klasa zawiera referencje do obu zespołów, planszy; przetrzumuje rownież obiekt ustawień z~informacjami takimi jak liczba graczy w drużynie.
+
+Komunikacja pomiędzy graczami a mistrzem gry odbywa się za~pośrednictwem serwera komunikacyjnego.
+Przetrzumuje on listę wydarzeń, graczy oraz~referencję na mistrza gry.
+
+Podstawowa klasa ustawień (Settings) zawiera informacje o rozmiarach planszy (za pomocą pary liczb całkowitoliczbowych zdefiniowana jest szerokość i~wysokość), maksymalnej liczbie fałszywek.
+Ponadto, przechowuje mapę kosztów poszczególnych akcji.
+
+Klasa planszy zawiera trzy strefy: jedną strefę zadań oraz~dwie strefy celu.
+Strefa zadań przechowuje pola, na których mogą znajdować się kawałki.
+Pola te zawierają odległość do najbliższego kawałka.
+Każda strefu celu zaś przechowuje pola, które mogą być częścią celu.
+Odkrywa się je, poprzez odkładanie na nich prawdziwych kawałków.
+Pola celu zawierają zmienną typu logicznego, która określa, czy jest to część zadania.
+
+Klasa kawałków przechowuje swoją lokalizację na planszy oraz~pole logiczne informujące o~prawdziwości kawałka.
+
+\newpage
+\section{Diagram aktywności}
+\includepdf[pages={1}]{diagram_aktywnosci.pdf}
+Po rozpoczęciu gry, mistrz gry tworzy planszę: strefę zadań; strefy celów; umieszcza kawałki.
+Następnie czeka aż gracze się połączą.
+
+Po podłączeniu wszystkich graczy, mistrz gry utrzymuje stan planszy oraz~obsługuje ruchy graczy.
+Kiedy gra zostanie zakończona, informuje graczy o końciu rozgrywki.
+
+Gracze mogą dołączyć do gry i~wykonywać ruchy: odkrywanie pól dookoła; ruch w jednym z~czterech kierunków; podniesienie lub odłożenie kawałka.
+Ruchy są przekazywane do mistrza gry (i odpowiedzi są przekazywane z~powrotem do gracza) za~pośrednictwem serwera komunikacyjnego.
+
+\newpage
+\section{Diagram stanów}
+\includepdf[pages={1}]{state_diagram_player.pdf}
+
+Na początku, gracz jest w stanie rozłączonym i~próbuje połączyć się z~grą.
+Jeśli się to nie uda, kończy działanie.
+
+Jeśli jednak połączenie zostanie nawiązane, to gracz oczekuje na rozpoczęcie gry.
+Po rozpoczęciu gry, gracz -- w pętli -- wykonuje ruch, oczekuje odpowiedzi, czeka na zakończenie ruchu, przetwarza nowy stan gry.
+Jeśli ruch zostanie odrzucony przez mistrza gry, gracz od razu próbuje wykonać kolejny ruch.
+
+Jeśli w którymś momencie gracz otrzyma wiadomość o zakończeniu gry (lub utraci połączenie), kończy działanie.
+
+\newpage
+\section{Diagram sekwencji}
+\includepdf[pages={1}]{sekwencje1.pdf}
+
+Najpierw gracz wywołuje metodę \code{Connect()} i~czeka na odpowiedź od serwera komunikacyjnego, który to przekierowuje zapytanie do mistrza gry i~czeka na odpowiedź, którą przekazuje do gracza.
+Jeśli gracz zostanie dodany do gry, bierze udział w grze.
+W przeciwnym przypadku kończy działanie.
+
+\includepdf[pages={1}]{sekwencje2.pdf}
+
+Gracz wykonuje ruchy w pętli, która kończy się, gdy dostanie odpowiedź (z serwera komunikacyjnego) z~komunikatem ,,koniec gry''.
+Serwer komunikacyjny dostaje informacje o ruchach wykonywanych przez graczy i~przekazuje je do mistrza gry.
+Następnie czeka na odpowiedź, którą przekazuje do gracza.
+Ponadto, otrzymuje informacje o komunikatach od mistrza gry, które przekazuje graczom.
+
+\includepdf[pages={1}]{sekwencje3.pdf}
+
+Komunikacja pomiędzy graczami odbywa się za~pośrednictwem serwera komunikacyjnego i~mistrza gry.
+
+Kiedy gracz \code{p1} chce skomunikować się z~graczem \code{p2}, najpierw wysyła wiadomość do serwera komunikacyjnego.
+Serwer komunikacyjny przekazuje zapytanie do mistrza gry, który następnie decyduje, czy taki ruch jest możliwy w danym momencie.
+Jeśli tak, to mistrz gry wysyła zapytanie (zawierające pole nadawcy, czyli gracza \code{p1}) do \code{p2}.
+Po otrzymaniu tej wiadomości (ponownie: za~pośrednictwem serwera komunikacyjnego), gracz \code{p2} decyduje o odpowiedzi (akceptacji lub odrzuceniu) i~wysyła ją. Odpowiedź wędruje przez serwer komunikacyjny do mistrza gry, ponownie do serwera komunikacyjnego, aż trafi do gracza \code{p1}.
 
 \end{document}
