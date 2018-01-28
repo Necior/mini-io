@@ -280,17 +280,17 @@ Każdy z graczy posiada konfiguracje, która umożliwia sterowaniem zachowaniem 
  
 
 \section{Uruchamianie aplikacji}
-Serwer komunikacyjny, mistrz gry i każdy z graczy stanowią osobne programy, każdy z nich może znajdować się na osobnej maszynie. Podczas uruchamiania programu gracza należy przekazać namiary na serwer komunikacyjny, ścieżkę do pliku z ustawieniami rozgrywki i do pliku z konfiguracją gracza:
+Serwer komunikacyjny, mistrz gry i każdy z graczy stanowią osobne programy, każdy z nich może znajdować się na osobnej maszynie. Podczas uruchamiania programu gracza należy przekazać namiary na serwer komunikacyjny, ścieżkę do pliku z ustawieniami rozgrywki i do pliku z konfiguracją gracza:\\
 
-./Gracz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaGracza.xml
+./Gracz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaGracza.xml\\
 
-Aplikacje mistrza gry uruchamiamy w bardzo podobny sposób, ale zamiast ścieżkę do pliku z ustawianiami gracza przekazujemy ścieżkę do pliku z ustawieniami mistrza gry:
+Aplikacje mistrza gry uruchamiamy w bardzo podobny sposób, ale zamiast ścieżkę do pliku z ustawianiami gracza przekazujemy ścieżkę do pliku z ustawieniami mistrza gry:\\
 
-./Mistrz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaMistrzaGry.xml
+./Mistrz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaMistrzaGry.xml\\
 
-Musimy również uruchomić serwer komunikacyjny, jedyny parametr, który musimy przekazać to port, na którym będzie nasłuchiwał nadchodzącej komunikacji:
+Musimy również uruchomić serwer komunikacyjny, jedyny parametr, który musimy przekazać to port, na którym będzie nasłuchiwał nadchodzącej komunikacji:\\
 
-./SerwerKominukacyjny --PORT=9876
+./SerwerKominukacyjny --PORT=9876\\
 
 Kolejność uruchamiania aplikacji nie ma znaczenia, jednak najlepiej rozpocząć proces do uruchomienia serwera komunikacyjnego, w ten sposób będziemy znali port, na którym nasłuchuje i w razie problemów z zajęciem danego portu będziemy mieć okazje od razu zareagować. Następnie najlepiej uruchomić mistrza gry, jeżeli uruchomimy go przed aplikacjami gracza będzie on mógł od razu odpowiedzieć na prośby przyłączenia do gry.
 
