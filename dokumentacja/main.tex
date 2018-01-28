@@ -22,6 +22,8 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
+\usepackage{float}
+
 \renewcommand\thesection{\arabic{section}.}
 \renewcommand\thesubsection{\arabic{section}.\arabic{subsection}.}
 \renewcommand\thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.}
@@ -74,6 +76,10 @@ Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer
 \begin{itemize}
 \item
   Gracz (\emph{player}) - agent grający w grę;
+\item
+  Mistrz gry (\emph{game master}) - generuje planszę oraz kształt celu, przechowuje rzeczywisty stan gry oraz generuje nowe kawałki;
+\item
+  Serwer komunikacyjny (\emph{communication server}) - odpowiedzialny za komunikację między graczami, a mistrzem gry;
 \item
   Kawałek (\emph{piece}) - token, reprezentujący zasób. Może być fałszywy lub nie;
 \item
@@ -198,7 +204,7 @@ Poniżej przedstawione zostaną możliwe do wykonania przez nich akcje.
 
 \subsubsection{Przypadki użycia}
 
-\begin{figure}
+\begin{figure}[H]
 \caption{Przypadki użycia gracza}
 \centering
 \includegraphics[scale=0.9]{przypadki_uzycia_gracz_lider.pdf}
@@ -215,19 +221,19 @@ Gracz ma również do dyspozycji następujące akcje: sprawdzenie pól dookoła,
 Ponadto, gracz może wysłać prośbę o wymianę informacji do innego gracza.
 W szczególności, może zarządać wymiany informacji od lidera.
 
-\begin{figure}
+\begin{figure}[H]
 \caption{Przypadki użycia mistrza gry}
 \centering
-\includegraphics[scale=0.9]{przypadki_uzycia_gm.pdf}
+\includegraphics[scale=0.7]{przypadki_uzycia_gm.pdf}
 \end{figure}
 
 Mistrz gry rozpoczyna grę, tj. generuje planszę oraz~czeka (i akceptuje) łączących się graczy.
 Następnie -- podczas gry -- dodaje kawałki (fałszywe lub nie) do strefy zadań; przelicza odległości do najbliższych kawałków; przekierowuje wiadomości pomiędzy graczami; oraz~przetwarza ruchy graczy.
 
-\begin{figure}
+\begin{figure}[H]
 \caption{Przypadki użycia serwera komunikacyjnego}
 \centering
-\includegraphics[scale=0.9]{przypadki_uzycia_cs.pdf}
+\includegraphics[scale=0.7]{przypadki_uzycia_cs.pdf}
 \end{figure}
 
 Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczami a mistrzem gry.
@@ -247,7 +253,12 @@ Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczam
 \section{Opis architektury}
 
 \subsection{Diagram klas}
-\includepdf[pages={1}]{diagram_klas.pdf}
+\newpage
+\begin{figure}[H]
+\caption{Diagram klas}
+\centering
+\includegraphics[scale=0.47]{diagram_klas.pdf}
+\end{figure}
 
 Klasa gracza zawiera pole strategii, odpowiedzialnej za wyliczanie kolejnych ruchów.
 Ponadto, klasa przechowuje pole ustawień (numer zespołu, rozmiar planszy, maksymalna liczba dopuszczalnych fałszywek oraz~mapę kosztów poszczególnych ruchów).
@@ -288,9 +299,12 @@ Pola celu zawierają zmienną typu logicznego, która określa, czy jest to czę
 
 Klasa kawałków przechowuje swoją lokalizację na planszy oraz~pole logiczne informujące o~prawdziwości kawałka.
 
-\newpage
 \section{Diagram aktywności}
-\includepdf[pages={1}]{diagram_aktywnosci.pdf}
+\begin{figure}[H]
+\caption{Diagram aktywności}
+\centering
+\includegraphics[scale=0.5]{diagram_aktywnosci.pdf}
+\end{figure}
 Po rozpoczęciu gry, mistrz gry tworzy planszę: strefę zadań; strefy celów; umieszcza kawałki.
 Następnie czeka aż gracze się połączą.
 
@@ -300,9 +314,13 @@ Kiedy gra zostanie zakończona, informuje graczy o końciu rozgrywki.
 Gracze mogą dołączyć do gry i~wykonywać ruchy: odkrywanie pól dookoła; ruch w jednym z~czterech kierunków; podniesienie lub odłożenie kawałka.
 Ruchy są przekazywane do mistrza gry (i odpowiedzi są przekazywane z~powrotem do gracza) za~pośrednictwem serwera komunikacyjnego.
 
-\newpage
+
 \section{Diagram stanów}
-\includepdf[pages={1}]{state_diagram_player.pdf}
+\begin{figure}[H]
+\caption{Diagram stanów gracza}
+\centering
+\includegraphics[scale=0.5]{state_diagram_player.pdf}
+\end{figure}
 
 Na początku, gracz jest w stanie rozłączonym i~próbuje połączyć się z~grą.
 Jeśli się to nie uda, kończy działanie.
@@ -315,23 +333,35 @@ Jeśli w którymś momencie gracz otrzyma wiadomość o zakończeniu gry (lub ut
 
 \section{Protokół komunikacyjny}
 
-\todo{Opis słowny komunikacji}
-
-\subsection{Diagram sekwencji}
-\includepdf[pages={1}]{sekwencje1.pdf}
+\subsection{Rozpoczęcie gry}
+\begin{figure}[H]
+\caption{Diagram sekwencji: rozpoczęcie gry}
+\centering
+\includegraphics[scale=0.8]{sekwencje1.pdf}
+\end{figure}
 
 Najpierw gracz wywołuje metodę \code{Connect()} i~czeka na odpowiedź od serwera komunikacyjnego, który to przekierowuje zapytanie do mistrza gry i~czeka na odpowiedź, którą przekazuje do gracza.
 Jeśli gracz zostanie dodany do gry, bierze udział w grze.
 W przeciwnym przypadku kończy działanie.
 
-\includepdf[pages={1}]{sekwencje2.pdf}
+\subsection{Komunikacja między graczem i mistrzem gry}
+\begin{figure}[H]
+\caption{Diagram sekwencji: gracz - mistrzy gry}
+\centering
+\includegraphics[scale=0.8]{sekwencje2.pdf}
+\end{figure}
 
 Gracz wykonuje ruchy w pętli, która kończy się, gdy dostanie odpowiedź (z serwera komunikacyjnego) z~komunikatem ,,koniec gry''.
 Serwer komunikacyjny dostaje informacje o ruchach wykonywanych przez graczy i~przekazuje je do mistrza gry.
 Następnie czeka na odpowiedź, którą przekazuje do gracza.
 Ponadto, otrzymuje informacje o komunikatach od mistrza gry, które przekazuje graczom.
 
-\includepdf[pages={1}]{sekwencje3.pdf}
+\subsection{Komunikacja między graczami}
+\begin{figure}[H]
+\caption{Diagram sekwencji: gracz - gracz}
+\centering
+\includegraphics[scale=0.8]{sekwencje3.pdf}
+\end{figure}
 
 Komunikacja pomiędzy graczami odbywa się za~pośrednictwem serwera komunikacyjnego i~mistrza gry.
 
