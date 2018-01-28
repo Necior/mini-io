@@ -198,7 +198,12 @@ Poniżej przedstawione zostaną możliwe do wykonania przez nich akcje.
 
 \subsubsection{Przypadki użycia}
 
-\includepdf[pages={1}]{przypadki_uzycia_gracz_lider.pdf}
+\begin{figure}
+\caption{Przypadki użycia gracza}
+\centering
+\includegraphics[scale=0.9]{przypadki_uzycia_gracz_lider.pdf}
+\end{figure}
+
 Gracz może otrzymać prośbę o wymianę informacji.
 Prośba może zostać zaakceptowana lub~odrzucona.
 Wyjątkiem jest prośba o wymianę informacji od lidera zespołu -- ta nie może zostać odrzucona.
@@ -210,12 +215,20 @@ Gracz ma również do dyspozycji następujące akcje: sprawdzenie pól dookoła,
 Ponadto, gracz może wysłać prośbę o wymianę informacji do innego gracza.
 W szczególności, może zarządać wymiany informacji od lidera.
 
-\includepdf[pages={1}]{przypadki_uzycia_gm.pdf}
+\begin{figure}
+\caption{Przypadki użycia mistrza gry}
+\centering
+\includegraphics[scale=0.9]{przypadki_uzycia_gm.pdf}
+\end{figure}
 
 Mistrz gry rozpoczyna grę, tj. generuje planszę oraz~czeka (i akceptuje) łączących się graczy.
 Następnie -- podczas gry -- dodaje kawałki (fałszywe lub nie) do strefy zadań; przelicza odległości do najbliższych kawałków; przekierowuje wiadomości pomiędzy graczami; oraz~przetwarza ruchy graczy.
 
-\includepdf[pages={1}]{przypadki_uzycia_cs.pdf}
+\begin{figure}
+\caption{Przypadki użycia serwera komunikacyjnego}
+\centering
+\includegraphics[scale=0.9]{przypadki_uzycia_cs.pdf}
+\end{figure}
 
 Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczami a mistrzem gry.
 
