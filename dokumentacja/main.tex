@@ -233,17 +233,72 @@ Następnie -- podczas gry -- dodaje kawałki (fałszywe lub nie) do strefy zada�
 Serwer komunikacyjny odpowiada za przekierowywanie wiadomości pomiędzy graczami a mistrzem gry.
 
 \section{Możliwości konfguracyjne}
+Możliwość konfiguracyjne kontrolują zasady i przebieg rozgrywki, część z nich jest znana wszystkim uczestnikom gry, ale każdy z uczestników posiada również swoje, indywidualne ustawienia. W związku z powyższym,  konfiguracyjne możemy podzielić na trzy grupy, konfiguracja rozgrywki, konfiguracja mistrza gry i konfiguracja gracza.
 
-\todo{Możliwości konfguracyjne}
+\subsection{Konfiguracja rozgrywki}
+Konfiguracja rozgrywki jest znana każdemu graczowi i mistrzowi gry, zawiera wszelkie dane potrzebne do poprawnego przeprowadzenia rozgrywki, możemy wydzielić następujące dane:
+  \begin{itemize}
+  \item
+    Koszt czasowy każdego z ruchów.
+  \item
+    Rozmiar planszy, czyli rozmiar strefy celu i strefy zadań.
+  \item 
+    Liczbę graczy w każdej z drużyn.
+  \item 
+    Informacje który z graczy jest liderem drużyny.
+  \end{itemize}
+
+\subsection{Konfiguracja mistrza gry}
+Mistrz gry posiada konfiguracje, którymi nie dzieli się z graczami biorącymi udział w rozgrywce:
+  \begin{itemize}
+  \item
+    Ilość i położenie pól w strefie celu.
+  \item
+    Maksymalną ilość kawałków jednocześnie znajdujących się na planszy.
+  \item 
+    Procentowy udział fałszywek w ramach wszystkich kawałków.
+  \end{itemize}
+  
+\subsection{Konfiguracja gracza}
+Każdy z graczy posiada konfiguracje, która umożliwia sterowaniem zachowaniem podczas rozgrywki, między innymi:
+  \begin{itemize}
+  \item
+    identyfikator drużyny, do której należy. 
+  \item
+    Strategia akceptacji próśb o udzielenie informacji.
+  \item
+    Poziom agresywności w szukaniu kawałków.
+  \item
+    Ustawienia strategii dotyczącej sprawdzania kawałków. 
+  \end{itemize}
+ 
 
 \section{Uruchamianie aplikacji}
+Serwer komunikacyjny, mistrz gry i każdy z graczy stanowią osobne programy, każdy z nich może znajdować się na osobnej maszynie. Podczas uruchamiania programu gracza należy przekazać namiary na serwer komunikacyjny, ścieżkę do pliku z ustawieniami rozgrywki i do pliku z konfiguracją gracza:
 
-\todo{Uruchamianie aplikacji -- jak będzie uruchamiana, co będzie wynikiem, skąd jest czytana konfiguracja etc.}
+./Gracz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaGracza.xml
+
+Aplikacje mistrza gry uruchamiamy w bardzo podobny sposób, ale zamiast ścieżkę do pliku z ustawianiami gracza przekazujemy ścieżkę do pliku z ustawieniami mistrza gry:
+
+./Mistrz --SC=192.168.1.20:9876 ./KonfiguracjaRozgrywki.xml ./KonfiguracjaMistrzaGry.xml
+
+Musimy również uruchomić serwer komunikacyjny, jedyny parametr, który musimy przekazać to port, na którym będzie nasłuchiwał nadchodzącej komunikacji:
+
+./SerwerKominukacyjny --PORT=9876
+
+Kolejność uruchamiania aplikacji nie ma znaczenia, jednak najlepiej rozpocząć proces do uruchomienia serwera komunikacyjnego, w ten sposób będziemy znali port, na którym nasłuchuje i w razie problemów z zajęciem danego portu będziemy mieć okazje od razu zareagować. Następnie najlepiej uruchomić mistrza gry, jeżeli uruchomimy go przed aplikacjami gracza będzie on mógł od razu odpowiedzieć na prośby przyłączenia do gry.
+
+Po zakończeniu rozgrywki, każda z aplikacji wypisuje podsumowanie, gry po czym kończy działanie.
 
 \section{Wymagania niefunkcjonalne}
+System ma za zadanie umożliwić sprawny przebieg rozgrywki dla dwóch drużyn rozmiaru do 20 graczy w każdej.
+W związku z tym, aplikacje serwera komunikacyjnego i mistrza gry, powinny być zoptymalizowane pod względem wydajności obliczeniowej i wykorzystania łącza sieciowego, tak aby mogły być uruchomione w warunkach laboratorium wydziałowego. 
 
-\todo{FURPS -- ile graczy obsługiwanych maksymalnie, co w przypadku problemów na łączach (rozłączenie gracza itp.)}
+W razie utraty łączności pomiędzy uczestnikami gry a serwerem komunikacyjnym, aplikacje aktywnie próbują odzyskać łączność przez czas nie krótszy niż 30 minut. Szczegółowy opis procesu znajduje się w rozdziale 13. Opis sytuacji wyjątkowych.
 
+Każdy z programów powinien dostarczać po podaniu parametru --help, krótki opis funkcjonalności wraz z opisem procesu uruchomienia.
+
+Programy graczy i mistrza gry, potrafią zaprezentować użytkownikowi aktualny widziany przez nich stan gry. 
 \section{Opis architektury}
 
 \subsection{Diagram klas}
