@@ -63,7 +63,7 @@ Gra jest toczona przez dwa rywalizujące zespoły.
 Oba zespoły składają się z~wielu graczy oraz~z~jednego wyróżnionego -- lidera zespołu.
 
 Gra jest rozgrywana na prostokątnej planszy, która jest podzielona na trzy strefy: dwie strefy celu (po jednej na każdą drużynę) oraz~na~środkową strefę -- strefę zadań.
-Zadania do przedsięwzięćia przez zespoły są reprezentowane przez kawałki.
+Zadania do przedsięwzięcia przez zespoły są reprezentowane przez kawałki.
 Są one umieszczane w strefie zadań, z~której to muszą zostać podniesione przez graczy, a następnie zaniesione do strefy celu.
 W strefie celu gracz jest w stanie stwierdzić, czy podniesiony kawałek był fałszywką, czy nie.
 
@@ -220,7 +220,7 @@ Nie może jednak wejść na pole celu przeciwnego zespołu.
 
 Gracz ma również do dyspozycji następujące akcje: sprawdzenie pól dookoła, podniesienie kawałka z~aktualnego pola, przetestowanie kawałka (o ile gracz znajduje się w strefie celu).
 Ponadto, gracz może wysłać prośbę o wymianę informacji do innego gracza.
-W szczególności, może zarządać wymiany informacji od lidera.
+W szczególności, może zażądać wymiany informacji od lidera.
 
 \begin{figure}[H]
 \caption{Przypadki użycia mistrza gry}
@@ -402,11 +402,11 @@ Wydarzenia są umieszczanie w kolejce \code{(EventQueue}), która zawiera przeds
 
 \hfill
 
-Mistrz gry jest klasą odpowiedzalną za stworzenie planszy, przeliczanie stanu gry, dodawania kawałków do planszy, przetwarzenie wszytkich ruchów graczy oraz~za wysyłanie specjalnych wydarzeń, takich jak informacja o początku lub końcu gry.
-Ta klasa zawiera referencje do obu zespołów, planszy; przetrzumuje rownież obiekt ustawień z~informacjami takimi jak liczba graczy w drużynie.
+Mistrz gry jest klasą odpowiedzialną za stworzenie planszy, przeliczanie stanu gry, dodawania kawałków do planszy, przetwarzanie wszystkich ruchów graczy oraz~za wysyłanie specjalnych wydarzeń, takich jak informacja o początku lub końcu gry.
+Ta klasa zawiera referencje do obu zespołów, planszy; przetrzymuje również obiekt ustawień z~informacjami takimi jak liczba graczy w drużynie.
 
 Komunikacja pomiędzy graczami a mistrzem gry odbywa się za~pośrednictwem serwera komunikacyjnego.
-Przetrzumuje on listę wydarzeń, graczy oraz~referencję na mistrza gry.
+Przetrzymuje on listę wydarzeń, graczy oraz~referencję na mistrza gry.
 
 Podstawowa klasa ustawień (Settings) zawiera informacje o rozmiarach planszy (za pomocą pary liczb całkowitoliczbowych zdefiniowana jest szerokość i~wysokość), maksymalnej liczbie fałszywek.
 Ponadto, przechowuje mapę kosztów poszczególnych akcji.
@@ -414,7 +414,7 @@ Ponadto, przechowuje mapę kosztów poszczególnych akcji.
 Klasa planszy zawiera trzy strefy: jedną strefę zadań oraz~dwie strefy celu.
 Strefa zadań przechowuje pola, na których mogą znajdować się kawałki.
 Pola te zawierają odległość do najbliższego kawałka.
-Każda strefu celu zaś przechowuje pola, które mogą być częścią celu.
+Każda strefy celu zaś przechowuje pola, które mogą być częścią celu.
 Odkrywa się je, poprzez odkładanie na nich prawdziwych kawałków.
 Pola celu zawierają zmienną typu logicznego, która określa, czy jest to część zadania.
 
@@ -430,7 +430,7 @@ Po rozpoczęciu gry, mistrz gry tworzy planszę: strefę zadań; strefy celów; 
 Następnie czeka aż gracze się połączą.
 
 Po podłączeniu wszystkich graczy, mistrz gry utrzymuje stan planszy oraz~obsługuje ruchy graczy.
-Kiedy gra zostanie zakończona, informuje graczy o końciu rozgrywki.
+Kiedy gra zostanie zakończona, informuje graczy o końcu rozgrywki.
 
 Gracze mogą dołączyć do gry i~wykonywać ruchy: odkrywanie pól dookoła; ruch w jednym z~czterech kierunków; podniesienie lub odłożenie kawałka.
 Ruchy są przekazywane do mistrza gry (i odpowiedzi są przekazywane z~powrotem do gracza) za~pośrednictwem serwera komunikacyjnego.
@@ -755,7 +755,7 @@ Odpowiedź (w przypadku odmowy):
 
 \section{Opis sytuacji wyjątkowych}
 
-Cała rozgrywka odbywa się w formie sieciowej, a każdy gracz, mistrz gry i serwer komunikacyjny to oddzielne programy. W takim wypadku konieczne jest rozważenie jak ma zachować się aplikacja w sytuacjach awaryjnych, gdy utracone zostanie połączenie z jednym z komponentów aplikacj. Kluczowe kwestie jakie należy rozważyć dla każdego programu, to:
+Cała rozgrywka odbywa się w formie sieciowej, a każdy gracz, mistrz gry i serwer komunikacyjny to oddzielne programy. W takim wypadku konieczne jest rozważenie jak ma zachować się aplikacja w sytuacjach awaryjnych, gdy utracone zostanie połączenie z jednym z komponentów aplikacji. Kluczowe kwestie jakie należy rozważyć dla każdego programu, to:
 \begin{itemize}
 \item Działanie poszczególnych programów po utracie łączności
 \item Działanie całości aplikacji 
@@ -781,7 +781,7 @@ Mistrz gry czeka na podłączenie się Lidera przez 5 minut. Jeśli się tak nie
 
 
 \subsection{Utrata łączności z serwerem komunikacyjnym}
-W momencie gdy serwer komunikacyjny utraci łączność z wszystkimi pozostałymi programami następuje jego ponowne uruchomienie. Serwer nie posiada danych, które modyfikowałyby jegostan poza konkretnym portem i dlatego można bez przeszkód uruchomić go ponownie. Oczywistym jest, że po utracie łączności z serwerem gra jest przerywana i wszyscy aktorzy próbują nawiązać ponownie połączenie. Próby te wykonywane są do skutku lub do momentu, gdy użytkownik nie zdecyduje o zamknięciu programów. 
+W momencie gdy serwer komunikacyjny utraci łączność z wszystkimi pozostałymi programami następuje jego ponowne uruchomienie. Serwer nie posiada danych, które modyfikowałyby jego stan poza konkretnym portem i dlatego można bez przeszkód uruchomić go ponownie. Oczywistym jest, że po utracie łączności z serwerem gra jest przerywana i wszyscy aktorzy próbują nawiązać ponownie połączenie. Próby te wykonywane są do skutku lub do momentu, gdy użytkownik nie zdecyduje o zamknięciu programów. 
 
 \subsection{Utrata łączności z mistrzem gry}
 Gdy utracone zostanie połączenie z mistrzem gry, rozgrywka jest wstrzymywana. Mistrz próbuje ponownie się podłączyć do serwera, niemniej jednak nie jest możliwy jego restart, gdyż posiada on wszystkie kluczowe informacje na temat obecnej rozgrywki. Próby ponownego połączenia wykonywane są przez 10 minut. 
