@@ -141,7 +141,7 @@ Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer
 \item
   Cel odkrywamy tylko poprzez położenie kawałka, nie poprzez odkrywanie pól dookoła;
 \item
-  Kawałek można testować tylko, jeśli aktualnie podniesiony przez gracza, który go chce przetestować;
+  Kawałek można testować tylko, jeśli jest aktualnie podniesiony przez gracza, który go chce przetestować;
 \item
   Odłożenie kawałka na pole sprawia, że kawałek tam zostaje, niezależnie od tego, czy to cel;
 \item
@@ -171,7 +171,7 @@ Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer
 \item
   Game master zarządza i pilnuje opóźnień dla wszystkich graczy;
 \item
-  Gra nie jest turowa, jest czas rzeczywistego (z opóźnieniami);
+  Gra nie jest turowa, tylko czasu rzeczywistego (z opóźnieniami);
 \item
   Do serwera komunikacyjnego łączą się bezpośrednio gracze;
 \item
@@ -203,8 +203,8 @@ Wszelka komunikacja pomiędzy mistrzem gry a graczami odbywa się poprzez serwer
 Poszczególni aktorzy opisani zostali w słowniku pojęć.
 Poniżej przedstawione zostaną możliwe do wykonania przez nich akcje.
 
-\subsubsection{Przypadki użycia}
-
+%%\subsubsection{Przypadki użycia}
+\subsection*{Przypadki użycia}
 \begin{figure}[H]
 \caption{Przypadki użycia gracza}
 \centering
@@ -366,7 +366,7 @@ Po zakończeniu rozgrywki, każda z aplikacji wypisuje podsumowanie, gry po czym
 System ma za zadanie umożliwić sprawny przebieg rozgrywki dla dwóch drużyn rozmiaru do 20 graczy w każdej.
 W związku z tym, aplikacje serwera komunikacyjnego i mistrza gry, powinny być zoptymalizowane pod względem wydajności obliczeniowej i wykorzystania łącza sieciowego, tak aby mogły być uruchomione w warunkach laboratorium wydziałowego. 
 
-W razie utraty łączności pomiędzy uczestnikami gry a serwerem komunikacyjnym, aplikacje aktywnie próbują odzyskać łączność przez czas nie krótszy niż 30 minut. Szczegółowy opis procesu znajduje się w rozdziale 13. Opis sytuacji wyjątkowych.
+W razie utraty łączności pomiędzy uczestnikami gry a serwerem komunikacyjnym, aplikacje aktywnie próbują odzyskać łączność przez czas nie krótszy niż 30 sekund. Szczegółowy opis procesu znajduje się w rozdziale 13. Opis sytuacji wyjątkowych.
 
 Każdy z programów powinien dostarczać po podaniu parametru --help, krótki opis funkcjonalności wraz z opisem procesu uruchomienia.
 
@@ -755,13 +755,37 @@ Odpowiedź (w przypadku odmowy):
 
 \section{Opis sytuacji wyjątkowych}
 
+Cała rozgrywka odbywa się w formie sieciowej, a każdy gracz, mistrz gry i serwer komunikacyjny to oddzielne programy. W takim wypadku konieczne jest rozważenie jak ma zachować się aplikacja w sytuacjach awaryjnych, gdy utracone zostanie połączenie z jednym z komponentów aplikacj. Kluczowe kwestie jakie należy rozważyć dla każdego programu, to:
+\begin{itemize}
+\item Działanie poszczególnych programów po utracie łączności
+\item Działanie całości aplikacji 
+\item Czas przez jaki będzie trwała próba wznowienia połączenia
+\item Czy jest możliwe ponowne uruchomienie danego programu
+\end{itemize}
+
+Po utracie połączenia każdy program wypisuje stosowny komunikat zawierający informacje o~liczbie wykonanych prób ponownego połączenia oraz adresie ip i porcie, do których próbuje się połączyć. 
+
 \subsection{Utrata łączności z graczem}
-\todo{Utrata łączności z graczem}
+Gdy gracz przestaje uzyskiwać jakiekolwiek odpowiedzi od serwera komunikacyjnego próbuje ponownie nawiązać połączenie. Próby są podejmowane przez minutę. 
+
+W przypadku powodzenia, gracz wraca na pole, w którym stał przed rozłączeniem i normalnie kontynuuje rozgrywkę.
+
+W przypadku niepowodzenia, program gracza jest restartowany z takimi samymi plikami konfiguracyjnymi jak poprzednio i następuje kolejna próba połączenia do gry. W tym przypadku połączenia gracza jest losowane. Jeżeli przez 5 minut nie uda się podłączyć do gry, dalsze próby są przerywane i program kończy grę wypisując komunikat z podsumowaniem.
+
+Jeżeli zwykły gracz utraci połączenie, to gra jest kontynuowana bez przeszkód. Przez minutę, czyli czas trwania próby łączenia tego samego programu, pole na planszy jest blokowane przez mistrza gry. Jeżeli natomiast w tym czasie gracz ponownie się nie połączy, znika on z planszy i każdy inny gracz może wejść z powrotem na to pole. Jeśli przed rozłączeniem gracz posiadał kawałek, to mistrz gry losuje nowe położenie dla tego samego kawałka. Drużyna ma prawo do uzupełnienia składu i utworzenia nowego gracza w miejsce starego. Jeśli jednak nawiązanie połączenia się nie uda, będą zmuszeni kontynuować grę w pomniejszonym składzie.
+
+\subsection{Utrata łączności z Liderem}
+Lider został uznany za dużo ważniejszego aktora niż zwykły gracz i po utracie łączności z~nim gra zostaje wstrzymana. W takim wypadku wszystkim programom wyświetla się komunikat o wstrzymaniu gry i co jest tego powodem. 
+
+Mistrz gry czeka na podłączenie się Lidera przez 5 minut. Jeśli się tak nie stanie to drużyna przeciwna wygrywa. Reszta mechaniki wznawiania połączenia jest taka sama jak u zwykłego gracza
+
 
 \subsection{Utrata łączności z serwerem komunikacyjnym}
-\todo{Utrata łączności z serwerem komunikacyjnym}
+W momencie gdy serwer komunikacyjny utraci łączność z wszystkimi pozostałymi programami następuje jego ponowne uruchomienie. Serwer nie posiada danych, które modyfikowałyby jegostan poza konkretnym portem i dlatego można bez przeszkód uruchomić go ponownie. Oczywistym jest, że po utracie łączności z serwerem gra jest przerywana i wszyscy aktorzy próbują nawiązać ponownie połączenie. Próby te wykonywane są do skutku lub do momentu, gdy użytkownik nie zdecyduje o zamknięciu programów. 
 
 \subsection{Utrata łączności z mistrzem gry}
-\todo{Utrata łączności z mistrzem gry}
+Gdy utracone zostanie połączenie z mistrzem gry, rozgrywka jest wstrzymywana. Mistrz próbuje ponownie się podłączyć do serwera, niemniej jednak nie jest możliwy jego restart, gdyż posiada on wszystkie kluczowe informacje na temat obecnej rozgrywki. Próby ponownego połączenia wykonywane są przez 10 minut. 
+
+Jeśli jednak po upływie tego czasu wszystkie próby zakończą się niepowodzeniem, to następuje ponowne uruchomienie Mistrza Gry i rozpoczęta zostaje nowa rozgrywka. Wszyscy gracze są informowani, że zaczynamy od początku, a ich pozycje startowe są ponownie losowane. Konfiguracje początkowe wszystkich graczy się nie zmieniają, żeby nowa rozgrywka w możliwie największym stopniu przypominała tę przerwaną. 
 
 \end{document}
