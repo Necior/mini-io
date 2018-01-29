@@ -7,6 +7,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{pdfpages}
 \usepackage{indentfirst}
+\usepackage{listings}
 
 % Adjust penalties
 \brokenpenalty=1000
@@ -253,6 +254,37 @@ Konfiguracja rozgrywki jest znana każdemu graczowi i mistrzowi gry, zawiera wsz
   \item 
     Informacje który z graczy jest liderem drużyny.
   \end{itemize}
+  
+\begin{lstlisting}
+<konfiguracja_rozgrywki>
+   <koszt_czasowy>
+   	<ruch> 10 </ruch>
+  	<podnies_kawalek> 20 </podnies_kawalek> 
+  	<sprawdz_kawalek> 40 </sprawdz_kawalek>
+	...
+  </koszt_czasowy>
+  <plansza>
+    <strefa_celu>
+       <szerokosc> 100 </szerokosc> 
+       <wysokosc> 50 </wysokosc>
+    </strefa_celu> 
+    <strefa_zadan>
+       <szerokosc> 100 </szerokosc> 
+       <wysokosc> 50 </wysokosc>
+    </strefa_zadan> 
+  </plansza>
+  <druzyna>
+    <id> 84659 </id>
+    <liczba_graczy> 10 </liczba_graczy>
+    <lider_id> 875890 </lider_id>
+  </druzyna>
+  <druzyna>
+    <id> 419456 </id>
+    <liczba_graczy> 10 </liczba_graczy>
+    <lider_id> 537858 </lider_id>
+  </druzyna>
+</konfiguracja_rozgrywki>
+\end{lstlisting}
 
 \subsection{Konfiguracja mistrza gry}
 Mistrz gry posiada konfiguracje, którymi nie dzieli się z graczami biorącymi udział w rozgrywce:
@@ -265,11 +297,35 @@ Mistrz gry posiada konfiguracje, którymi nie dzieli się z graczami biorącymi 
     Procentowy udział fałszywek w ramach wszystkich kawałków.
   \end{itemize}
   
+\begin{lstlisting}
+<konfiguracja_mistrza_gry>
+   <polozenia_celu>
+     <cel>
+       <szerokosc> 10 </szerokosc> 
+       <wysokosc> 5 </wysokosc
+     </cel>
+     <cel>
+       <szerokosc> 12 </szerokosc> 
+       <wysokosc> 7 </wysokosc
+     </cel>
+     <cel>
+       <szerokosc> 15 </szerokosc> 
+       <wysokosc> 7 </wysokosc
+     </cel>
+     ....
+  </polozenia_celu>
+  <liczba_kawalkow> 10 </liczba_kawalkow>
+  <procent_falszywek> 45 </procent_falszywek>
+</konfiguracja_mistrza_gry>
+\end{lstlisting}
+  
 \subsection{Konfiguracja gracza}
 Każdy z graczy posiada konfiguracje, która umożliwia sterowaniem zachowaniem podczas rozgrywki, między innymi:
   \begin{itemize}
   \item
-    identyfikator drużyny, do której należy. 
+    Identyfikator gracza. 
+  \item
+    Identyfikator drużyny, do której należy. 
   \item
     Strategia akceptacji próśb o udzielenie informacji.
   \item
@@ -277,6 +333,16 @@ Każdy z graczy posiada konfiguracje, która umożliwia sterowaniem zachowaniem 
   \item
     Ustawienia strategii dotyczącej sprawdzania kawałków. 
   \end{itemize}
+  
+ \begin{lstlisting}
+<konfiguracja_gracza>
+  <id_gracza> 657908 </id_gracza>
+  <id_druzyny> 419456 </id_druzyny>
+  <udzielaj_informacji> 0 </udzielaj_informacji>
+  <agresywnosc> 5 </agresywnosc>
+  <sprawdzaj_kawalki> 2 </sprawdzaj_kawalki>
+</konfiguracja_mistrza_gry>
+\end{lstlisting}
  
 
 \section{Uruchamianie aplikacji}
